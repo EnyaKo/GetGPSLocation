@@ -4,7 +4,7 @@ I did several tests and find that getting GPS location by internet is better tha
 
 ### Request location and internet permissions
 There are two location permissions, ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION.
-To request location and internet permissions, add the following to your app manifest
+To request location and internet permissions, add the following to your app manifest\
     \<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\
     \<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\
     \<uses-permission android:name="android.permission.INTERNET" />
