@@ -47,15 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     LocationManager locationManager;
 
-    double longitudeBest, latitudeBest;
-
-    double longitudeGPS, latitudeGPS;
-
     double longitudeNetwork, latitudeNetwork;
-
-    TextView longitudeValueBest, latitudeValueBest;
-
-    TextView longitudeValueGPS, latitudeValueGPS;
 
     TextView longitudeValueNetwork, latitudeValueNetwork;
 
@@ -69,15 +61,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-
-        longitudeValueBest = (TextView) findViewById(R.id.longitudeValueBest);
-
-        latitudeValueBest = (TextView) findViewById(R.id.latitudeValueBest);
-
-        longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
-
-        latitudeValueGPS = (TextView) findViewById(R.id.latitudeValueGPS);
 
         longitudeValueNetwork = (TextView) findViewById(R.id.longitudeValueNetwork);
 
@@ -145,97 +128,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void toggleGPSUpdates(View view) {
-
-        if (!checkLocation())
-
-            return;
-
-        Button button = (Button) view;
-
-        if (button.getText().equals(getResources().getString(R.string.pause))) {
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            locationManager.removeUpdates(locationListenerGPS);
-
-            button.setText(R.string.resume);
-
-        } else {
-
-            locationManager.requestLocationUpdates(
-
-                    LocationManager.GPS_PROVIDER, 2 * 60 * 1000, 10, locationListenerGPS);
-
-            button.setText(R.string.pause);
-
-        }
-
-    }
-
-
-    public void toggleBestUpdates(View view) {
-
-        if (!checkLocation())
-
-            return;
-
-        Button button = (Button) view;
-
-        if (button.getText().equals(getResources().getString(R.string.pause))) {
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            locationManager.removeUpdates(locationListenerBest);
-
-            button.setText(R.string.resume);
-
-        } else {
-
-            Criteria criteria = new Criteria();
-
-            criteria.setAccuracy(Criteria.ACCURACY_FINE);
-
-            criteria.setAltitudeRequired(false);
-
-            criteria.setBearingRequired(false);
-
-            criteria.setCostAllowed(true);
-
-            criteria.setPowerRequirement(Criteria.POWER_LOW);
-
-            String provider = locationManager.getBestProvider(criteria, true);
-
-            if (provider != null) {
-
-                locationManager.requestLocationUpdates(provider, 2 * 60 * 1000, 10, locationListenerBest);
-
-                button.setText(R.string.pause);
-
-                Toast.makeText(this, "Best Provider is " + provider, Toast.LENGTH_LONG).show();
-
-            }
-
-        }
-
-    }
-
 
     public void toggleNetworkUpdates(View view) {
 
@@ -279,67 +171,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private final LocationListener locationListenerBest = new LocationListener() {
-
-        public void onLocationChanged(Location location) {
-
-            longitudeBest = location.getLongitude();
-
-            latitudeBest = location.getLatitude();
-
-
-
-            runOnUiThread(new Runnable() {
-
-                @Override
-
-                public void run() {
-
-                    longitudeValueBest.setText(longitudeBest + "");
-
-                    latitudeValueBest.setText(latitudeBest + "");
-
-                    Toast.makeText(MainActivity.this, "Best Provider update", Toast.LENGTH_SHORT).show();
-
-                }
-
-            });
-
-        }
-
-
-
-        @Override
-
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-
-
-        }
-
-
-
-        @Override
-
-        public void onProviderEnabled(String s) {
-
-
-
-        }
-
-
-
-        @Override
-
-        public void onProviderDisabled(String s) {
-
-
-
-        }
-
-    };
-
-
 
     private final LocationListener locationListenerNetwork = new LocationListener() {
 
@@ -362,68 +193,6 @@ public class MainActivity extends AppCompatActivity {
                     latitudeValueNetwork.setText(latitudeNetwork + "");
 
                     Toast.makeText(MainActivity.this, "Network Provider update", Toast.LENGTH_SHORT).show();
-
-                }
-
-            });
-
-        }
-
-
-
-        @Override
-
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-
-
-        }
-
-
-
-        @Override
-
-        public void onProviderEnabled(String s) {
-
-
-
-        }
-
-
-
-        @Override
-
-        public void onProviderDisabled(String s) {
-
-
-
-        }
-
-    };
-
-
-
-    private final LocationListener locationListenerGPS = new LocationListener() {
-
-        public void onLocationChanged(Location location) {
-
-            longitudeGPS = location.getLongitude();
-
-            latitudeGPS = location.getLatitude();
-
-
-
-            runOnUiThread(new Runnable() {
-
-                @Override
-
-                public void run() {
-
-                    longitudeValueGPS.setText(longitudeGPS + "");
-
-                    latitudeValueGPS.setText(latitudeGPS + "");
-
-                    Toast.makeText(MainActivity.this, "GPS Provider update", Toast.LENGTH_SHORT).show();
 
                 }
 
