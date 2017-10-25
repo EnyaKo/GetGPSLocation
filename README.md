@@ -10,7 +10,7 @@ To request location and internet permissions, add the following to your app mani
     \<uses-permission android:name="android.permission.INTERNET" />
     
 ### Location updated every one minute and every 10 meters
-time: 6*1000 ms
+time: 6*1000 ms\
 distance: 10 m
 <p align="center"/>
 <img src="pic/update_snapshot.png" />
