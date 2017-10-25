@@ -9,7 +9,7 @@ To request location and internet permissions, add the following to your app mani
     \<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\
     \<uses-permission android:name="android.permission.INTERNET" />
     
-### Location updated every one minute and every 10 meters
+### Location updated in every minute and in every 10 meters
 time: 6*1000 ms\
 distance: 10 m
 <p align="center"/>
